@@ -1,0 +1,12 @@
+{
+    "name": "vendor/template_engine",
+    "description": "Version 1.0",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Yaroslav Abarnykov",
+            "email": "yaroslav.abarnykov@codeit.com.ua"
+        }
+    ],
+    "require": {}
+}
