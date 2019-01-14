@@ -8,5 +8,10 @@
             "email": "yaroslav.abarnykov@codeit.com.ua"
         }
     ],
+    "autoload": {
+        "psr-4": {
+          "TemplateEngine\\": "src/"
+        }
+    },
     "require": {}
 }
