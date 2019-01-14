@@ -1,5 +1,5 @@
 {
-    "name": "vendor/template_engine",
+    "name": "template_engine/template_engine",
     "description": "Version 1.0",
     "type": "library",
     "authors": [
