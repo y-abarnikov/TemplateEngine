@@ -9,14 +9,14 @@ class TemplateEngine
      *
      * The name of basic layout.
      */
-    protected $layoutName = '';
+    public $layoutName = '';
 
     /**
      * @var array $templateVars
      *
      * Array of variables that will use in layout or template.
      */
-    protected $templateVars = [];
+    public $templateVars = [];
 
     /**
      * @var array $helpers .
@@ -32,7 +32,7 @@ class TemplateEngine
      * @param $layoutName
      * @param array $templateVars
      */
-    public function __construct($layoutName, $templateVars = [])
+    public function __construct($layoutName = '')
     {
         if (!empty($layoutName)) {
             if (file_exists('../App/Views/Layouts/' . $layoutName . '.php')) {
@@ -43,8 +43,6 @@ class TemplateEngine
         } else {
             $this->layoutName = 'partial';
         }
-
-        $this->templateVars = $templateVars;
     }
 
     /**
@@ -57,7 +55,9 @@ class TemplateEngine
      */
     public function render($view): void
     {
-        extract($this->templateVars, EXTR_SKIP);
+        if (!empty($this->templateVars)) {
+            extract($this->templateVars, EXTR_SKIP);
+        }
 
         $template = '../App/Views/Templates/' . $view . '.php';
 
@@ -95,9 +95,8 @@ class TemplateEngine
         } elseif (!empty($this->templateVars)) {
             $data = $this->templateVars;
         }
-
-        $tempEngine = new TemplateEngine('', $data);
-
+        $tempEngine = new TemplateEngine();
+        $tempEngine->addArrayVariables($data);
         $tempEngine->render($partialTemplateName);
     }
 
@@ -119,7 +118,7 @@ class TemplateEngine
      */
     public function addArrayVariables(array $variables): void
     {
-        array_merge($this->templateVars, $variables);
+        $this->templateVars = array_merge($this->templateVars, $variables);
     }
 
     /**
@@ -129,7 +128,6 @@ class TemplateEngine
      */
     public function deleteVariable(string $name): void
     {
-
         if (isset($this->templateVars[$name])) {
             unset($this->templateVars[$name]);
         }
@@ -170,7 +168,6 @@ class TemplateEngine
             if (count($parameters) > 0) {
                 return call_user_func_array($this->helpers[$method], $parameters);
             }
-
             /** @var string $method */
             return $this->helpers[$method]();
         }
