@@ -9,14 +9,14 @@ class TemplateEngine
      *
      * The name of basic layout.
      */
-    public $layoutName = '';
+    protected $layoutName = '';
 
     /**
      * @var array $templateVars
      *
      * Array of variables that will use in layout or template.
      */
-    public $templateVars = [];
+    protected $templateVars = [];
 
     /**
      * @var array $helpers .
@@ -30,18 +30,11 @@ class TemplateEngine
      * TemplateEngine constructor.
      *
      * @param $layoutName
-     * @param array $templateVars
      */
     public function __construct($layoutName = '')
     {
-        if (!empty($layoutName)) {
-            if (file_exists('../App/Views/Layouts/' . $layoutName . '.php')) {
-                $this->layoutName = $layoutName;
-            } else {
-                $this->layoutName = 'base';
-            }
-        } else {
-            $this->layoutName = 'partial';
+        if (file_exists('../App/Views/Layouts/' . $layoutName . '.php')) {
+            $this->layoutName = $layoutName;
         }
     }
 
@@ -49,7 +42,6 @@ class TemplateEngine
      * Render a view file
      *
      * @param string $view The view file
-     *
      * @return void
      * @throws \Exception
      */
@@ -77,8 +69,11 @@ class TemplateEngine
                 require $layout;
 
             } else {
+                
                 throw new \Exception($layout . 'not found');
             }
+        } else {
+            echo $content;
         }
     }
 
@@ -86,6 +81,8 @@ class TemplateEngine
      * @param string $partialTemplateName
      * @param array $partialVars
      * @throws \Exception
+     *
+     * Include a partial template to rhe file.
      */
     public function partial(string $partialTemplateName, array $partialVars = []): void
     {
